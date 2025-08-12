@@ -58,7 +58,8 @@ export function LoginForm() {
 
     try {
       // Development bypass - check if using dummy credentials
-      if (process.env.NODE_ENV === 'development' && 
+      if (
+        // process.env.NODE_ENV === 'development' && 
           data.email === DUMMY_USER.email && 
           data.password === DUMMY_USER.password) {
         
@@ -151,7 +152,9 @@ export function LoginForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {/* Development Quick Login */}
-      {process.env.NODE_ENV === 'development' && (
+      {
+      // process.env.NODE_ENV === 'development' && 
+      (
         <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
           <div className="flex items-center justify-between">
             <div>
