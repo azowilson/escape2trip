@@ -1,12 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { ROUTES } from '@/lib/constants'
 import {
   MapPin,
   Plus,
@@ -17,18 +15,8 @@ import {
   Search,
   Star,
   Bell,
-  MoreHorizontal,
-  Play,
-  Eye,
   Share2,
   Bookmark,
-  Filter,
-  ArrowRight,
-  ChevronDown,
-  Camera,
-  Route,
-  Globe,
-  TrendingUp,
   Home,
   Compass,
   User,
@@ -37,7 +25,9 @@ import {
   Image,
   Smile,
   Menu,
-  X
+  X,
+  Route,
+  MoreHorizontal
 } from 'lucide-react'
 import Link from 'next/link'
 

@@ -17,11 +17,7 @@ import {
   Lock,
   User,
   Eye,
-  EyeOff,
-  ArrowRight,
-  Check,
-  X
-} from 'lucide-react'
+  EyeOff} from 'lucide-react'
 
 const registerSchema = z.object({
   firstName: z.string().min(2, 'First name must be at least 2 characters'),

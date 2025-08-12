@@ -1,36 +1,21 @@
 'use client'
 
-import { useSession } from 'next-auth/react'
-import { useEffect, useState } from 'react'
-import { redirect } from 'next/navigation'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { useState, useEffect } from 'react'
+import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { ROUTES } from '@/lib/constants'
 import {
   MapPin,
   Plus,
   Heart,
-  MessageCircle,
   Users,
-  Calendar,
   Search,
   Star,
   Bell,
-  MoreHorizontal,
-  Play,
-  Eye,
-  Share2,
   Bookmark,
-  Filter,
-  ArrowRight,
-  ChevronDown,
-  Camera,
   Route,
-  Globe,
-  TrendingUp,
   Home,
   Compass,
   User,
@@ -88,74 +73,69 @@ const topRatedRoutes: Route[] = [
     location: 'Rome, Florence, Venice',
     image: '/api/placeholder/300/200',
     user: {
-      name: 'Emma S.',
+      name: 'Sarah L.',
       avatar: '/api/placeholder/40/40'
     },
-    rating: 4.9,
-    duration: '14 days',
-    stops: 15,
+    rating: 5.0,
+    duration: '7 days',
+    stops: 8,
     likes: 189,
     saves: 98
   },
   {
     id: '3',
-    title: 'Iceland Ring Road',
-    location: 'Reykjavik, Akureyri',
+    title: 'Scottish Highlands',
+    location: 'Edinburgh, Inverness, Isle of Skye',
     image: '/api/placeholder/300/200',
     user: {
       name: 'Mike T.',
       avatar: '/api/placeholder/40/40'
     },
-    rating: 4.7,
+    rating: 4.9,
     duration: '8 days',
     stops: 10,
     likes: 156,
-    saves: 87
+    saves: 89
   },
   {
     id: '4',
-    title: 'Santorini Sunset',
-    location: 'Oia, Fira, Imerovigli',
+    title: 'Amalfi Coast Dream',
+    location: 'Positano, Amalfi, Ravello',
     image: '/api/placeholder/300/200',
     user: {
-      name: 'Sarah L.',
+      name: 'Emma W.',
       avatar: '/api/placeholder/40/40'
     },
-    rating: 4.6,
+    rating: 4.7,
     duration: '6 days',
-    stops: 8,
-    likes: 203,
-    saves: 134
+    stops: 7,
+    likes: 123,
+    saves: 67
   }
 ]
 
 const travelStories: TravelStory[] = [
   { id: 'add', user: { name: 'Add Story', avatar: '', initials: '+' }, isAddStory: true },
-  { id: '1', user: { name: 'Emma S.', avatar: '/api/placeholder/60/60', initials: 'ES' } },
-  { id: '2', user: { name: 'John D.', avatar: '/api/placeholder/60/60', initials: 'JD' } },
-  { id: '3', user: { name: 'Mike T.', avatar: '/api/placeholder/60/60', initials: 'MT' } },
-  { id: '4', user: { name: 'Sarah L.', avatar: '/api/placeholder/60/60', initials: 'SL' } },
-  { id: '5', user: { name: 'Lisa M.', avatar: '/api/placeholder/60/60', initials: 'LM' } },
-  { id: '6', user: { name: 'Anna K.', avatar: '/api/placeholder/60/60', initials: 'AK' } },
-  { id: '7', user: { name: 'David W.', avatar: '/api/placeholder/60/60', initials: 'DW' } }
+  { id: '1', user: { name: 'Emma', avatar: '/api/placeholder/60/60', initials: 'ES' } },
+  { id: '2', user: { name: 'John', avatar: '/api/placeholder/60/60', initials: 'JD' } },
+  { id: '3', user: { name: 'Mike', avatar: '/api/placeholder/60/60', initials: 'MT' } },
+  { id: '4', user: { name: 'Sarah', avatar: '/api/placeholder/60/60', initials: 'SL' } }
 ]
 
 export default function DashboardPage() {
-  const { data: session, status } = useSession()
-  const [dummySession, setDummySession] = useState<any>(null)
-  const [isLoading, setIsLoading] = useState(true)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [currentSession, setCurrentSession] = useState<any>(null)
 
   useEffect(() => {
-    // Check for dummy session in development
+    // Check for dummy session in localStorage for development
     if (process.env.NODE_ENV === 'development') {
-      const storedSession = localStorage.getItem('dummy-session')
-      if (storedSession) {
+      const dummySession = localStorage.getItem('dummy-session')
+      if (dummySession) {
         try {
-          const parsedSession = JSON.parse(storedSession)
+          const parsedSession = JSON.parse(dummySession)
           // Check if session is still valid
           if (new Date(parsedSession.expires) > new Date()) {
-            setDummySession(parsedSession)
+            setCurrentSession(parsedSession)
           } else {
             localStorage.removeItem('dummy-session')
           }
@@ -164,38 +144,7 @@ export default function DashboardPage() {
         }
       }
     }
-    setIsLoading(false)
   }, [])
-
-  // Use dummy session in development if available
-  const currentSession = process.env.NODE_ENV === 'development' && dummySession ? dummySession : session
-  const currentStatus = process.env.NODE_ENV === 'development' && dummySession ? 'authenticated' : status
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
-        </div>
-      </div>
-    )
-  }
-
-  if (currentStatus === 'loading') {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
-        </div>
-      </div>
-    )
-  }
-
-  if (!currentSession?.user) {
-    redirect('/login')
-  }
 
   return (
     <div className="min-h-screen bg-gray-50">

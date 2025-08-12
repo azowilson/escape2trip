@@ -16,9 +16,7 @@ import {
   Mail, 
   Lock, 
   Eye, 
-  EyeOff,
-  ArrowRight
-} from 'lucide-react'
+  EyeOff} from 'lucide-react'
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),

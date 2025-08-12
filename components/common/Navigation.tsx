@@ -39,7 +39,7 @@ export function Navigation() {
             >
               Explore
             </Link>
-            {session?.user?.id && (
+            {session?.user && (
               <Link 
                 href={ROUTES.DASHBOARD} 
                 className="text-gray-600 hover:text-gray-900 transition-colors"
@@ -53,7 +53,7 @@ export function Navigation() {
           <div className="flex items-center space-x-4">
             {status === 'loading' ? (
               <div className="w-20 h-8 bg-gray-200 animate-pulse rounded"></div>
-            ) : session?.user?.id ? (
+            ) : session?.user ? (
               <div className="flex items-center space-x-4">
                 <Button asChild size="sm">
                   <Link href={ROUTES.TRIPS.CREATE}>

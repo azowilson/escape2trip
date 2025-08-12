@@ -1,6 +1,4 @@
-import Link from 'next/link'
 import { RegisterForm } from '@/components/forms/RegisterForm'
-import { ROUTES } from '@/lib/constants'
 
 export default function RegisterPage() {
   return (

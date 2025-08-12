@@ -1,3 +1,6 @@
+import { Like } from "./social"
+import { User } from "./user"
+
 export interface Trip {
   id: string
   title: string
