@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  name        String?
+  password    String?
+  avatar      String?
+  bio         String?
+  trips       Trip[]
+  followers   Follow[] @relation("UserFollowers")
+  following   Follow[] @relation("UserFollowing")
+  comments    Comment[]
+  likes       Like[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Trip {
+  id          String      @id @default(cuid())
+  title       String
+  description String?
+  isPublic    Boolean     @default(false)
+  startDate   DateTime?
+  endDate     DateTime?
+  budget      Float?
+  userId      String
+  user        User        @relation(fields: [userId], references: [id])
+  waypoints   Waypoint[]
+  itinerary   Itinerary[]
+  comments    Comment[]
+  likes       Like[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Waypoint {
+  id          String   @id @default(cuid())
+  name        String
+  latitude    Float
+  longitude   Float
+  address     String?
+  order       Int
+  tripId      String
+  trip        Trip     @relation(fields: [tripId], references: [id])
+  createdAt   DateTime @default(now())
+}
+
+model Itinerary {
+  id          String   @id @default(cuid())
+  day         Int
+  title       String
+  description String?
+  startTime   DateTime?
+  endTime     DateTime?
+  location    String?
+  tripId      String
+  trip        Trip     @relation(fields: [tripId], references: [id])
+  createdAt   DateTime @default(now())
+}
+
+model Follow {
+  id          String   @id @default(cuid())
+  followerId  String
+  followingId String
+  follower    User     @relation("UserFollowers", fields: [followerId], references: [id])
+  following   User     @relation("UserFollowing", fields: [followingId], references: [id])
+  createdAt   DateTime @default(now())
+
+  @@unique([followerId, followingId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  userId    String
+  tripId    String
+  user      User     @relation(fields: [userId], references: [id])
+  trip      Trip     @relation(fields: [tripId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  userId    String
+  tripId    String
+  user      User     @relation(fields: [userId], references: [id])
+  trip      Trip     @relation(fields: [tripId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, tripId])
+}
